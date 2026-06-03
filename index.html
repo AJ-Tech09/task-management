@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TaskFlow - Task Manager</title>
+<link href="styles.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+
+
+</head>
+<body>
+
+<nav>
+    <div class="logo">TaskFlow</div>
+
+    <ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="#">Tasks</a></li>
+        <li><a href="#">Dashboard</a></li>
+        <li><a href="#">Profile</a></li>
+    </ul>
+</nav>
+
+<section class="hero">
+    <div class="hero-content">
+        <h1>Manage Your <span>Tasks</span> Like a Pro</h1>
+        <p>
+            Organize your workflow, track progress, and stay productive
+            with a modern task management experience.
+        </p>
+    </div>
+
+    <div class="hero-image">
+        <div class="card">
+            <i class="fas fa-tasks"></i>
+        </div>
+    </div>
+</section>
+
+<section class="tasks">
+
+    <div class="section-title">
+        <h2>Task Manager</h2>
+    </div>
+
+    <div class="task-container">
+
+        <div class="task-input">
+            <input type="text" id="taskInput" placeholder="Enter a new task...">
+            <button onclick="addTask()">Add Task</button>
+        </div>
+
+        <div class="task-list" id="taskList"></div>
+
+    </div>
+</section>
+
+<section class="stats">
+    <div class="stats-grid">
+
+        <div class="stat-card">
+            <i class="fas fa-list-check"></i>
+            <h3 id="totalTasks">0</h3>
+            <p>Total Tasks</p>
+        </div>
+
+        <div class="stat-card">
+            <i class="fas fa-circle-check"></i>
+            <h3 id="completedTasks">0</h3>
+            <p>Completed</p>
+        </div>
+
+    </div>
+</section>
+
+<footer>
+    © 2026 TaskFlow. Modern Task Management System.
+</footer>
+
+<script>
+
+let total = 0;
+let completed = 0;
+
+function updateStats(){
+    document.getElementById("totalTasks").innerText = total;
+    document.getElementById("completedTasks").innerText = completed;
+}
+
+function addTask(){
+
+    const input = document.getElementById("taskInput");
+    const taskText = input.value.trim();
+
+    if(taskText === "") return;
+
+    total++;
+    updateStats();
+
+    const task = document.createElement("div");
+    task.classList.add("task");
+
+    task.innerHTML = `
+        <span>${taskText}</span>
+
+        <div class="task-actions">
+            <button class="complete-btn">
+                <i class="fas fa-check"></i>
+            </button>
+
+            <button class="delete-btn">
+                <i class="fas fa-trash"></i>
+            </button>
+        </div>
+    `;
+
+    task.querySelector(".complete-btn")
+    .addEventListener("click", () => {
+
+        if(!task.classList.contains("completed")){
+            task.classList.add("completed");
+            completed++;
+        }else{
+            task.classList.remove("completed");
+            completed--;
+        }
+
+        updateStats();
+    });
+
+    task.querySelector(".delete-btn")
+    .addEventListener("click", () => {
+
+        if(task.classList.contains("completed")){
+            completed--;
+        }
+
+        total--;
+        updateStats();
+
+        task.remove();
+    });
+
+    document.getElementById("taskList").appendChild(task);
+
+    input.value = "";
+}
+
+</script>
+
+</body>
+</html>
